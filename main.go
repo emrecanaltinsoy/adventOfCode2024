@@ -6,4 +6,5 @@ import (
 
 func main() {
 	day1.Day1Challenge1()
+	day1.Day1Challenge2()
 }
