@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func Day1Challenge1() {
-	fmt.Println("Day1Challenge1")
+func Day2Challenge1() {
+	fmt.Println("Day2Challenge1")
 
 	file, err := os.Open("./day2/challenge1.txt")
 	if err != nil {
@@ -62,8 +62,8 @@ func Day1Challenge1() {
 	fmt.Println("total", total)
 }
 
-func Day1Challenge2() {
-	fmt.Println("Day1Challenge2")
+func Day2Challenge2() {
+	fmt.Println("Day2Challenge2")
 
 	file, err := os.Open("./day1/challenge2.txt")
 	if err != nil {

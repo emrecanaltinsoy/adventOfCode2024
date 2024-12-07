@@ -8,6 +8,6 @@ import (
 func main() {
 	// day1.Day1Challenge1()
 	// day1.Day1Challenge2()
-	day2.Day1Challenge1()
-	// day2.Day1Challenge2()
+	// day2.Day2Challenge1()
+	day2.Day2Challenge2()
 }
