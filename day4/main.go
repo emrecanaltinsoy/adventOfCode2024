@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
+	"strings"
 )
 
 func Day4Challenge1() {
@@ -90,9 +92,34 @@ func Day4Challenge2() {
 
 	scanner := bufio.NewScanner(file)
 	total := 0
+	var lines []string
 	for scanner.Scan() {
 		line := scanner.Text()
-		fmt.Println(line)
+		lines = append(lines, line)
+	}
+
+	getCharacter := func(r int, c int) string {
+		return string(lines[r][c])
+	}
+	validSequences := strings.Split("MMSS MSSM SMMS SSMM", " ")
+
+	isValid := func(r int, c int) bool {
+		sequence := getCharacter(r-1, c-1) + getCharacter(r-1, c+1) + getCharacter(r+1, c+1) + getCharacter(r+1, c-1)
+		return slices.Contains(validSequences, sequence)
+	}
+
+	R := len(lines)
+	C := len(lines[0])
+	fmt.Println(validSequences)
+	for r := 1; r < R-1; r++ {
+		for c := 1; c < C-1; c++ {
+			if getCharacter(r, c) != "A" {
+				continue
+			}
+			if isValid(r, c) {
+				total++
+			}
+		}
 	}
 	fmt.Println(total)
 }

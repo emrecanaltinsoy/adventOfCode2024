@@ -14,6 +14,6 @@ func main() {
 	// day2.Day2Challenge2()
 	// day3.Day3Challenge1()
 	// day3.Day3Challenge2()
-	day4.Day4Challenge1()
-	// day4.Day4Challenge2()
+	// day4.Day4Challenge1()
+	day4.Day4Challenge2()
 }
