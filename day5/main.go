@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
+	"strings"
 )
 
 func Day5Challenge1() {
@@ -17,12 +19,44 @@ func Day5Challenge1() {
 
 	scanner := bufio.NewScanner(file)
 	total := 0
-	var lines []string
+	pagesMap := make(map[int][]int)
+	var pageOrders []string
 	for scanner.Scan() {
 		line := scanner.Text()
-		lines = append(lines, line)
+		if strings.Contains(line, "|") {
+			pageNums, err := StringsToIntegers(strings.Split(line, "|"))
+			if err != nil {
+				fmt.Println("Error converting to integer")
+			}
+			_, ok := pagesMap[pageNums[0]]
+			if ok {
+				mappedPages := pagesMap[pageNums[0]]
+				mappedPages = append(mappedPages, pageNums[1])
+				pagesMap[pageNums[0]] = mappedPages
+			} else {
+				var mappedPages []int
+				mappedPages = append(mappedPages, pageNums[1])
+				pagesMap[pageNums[0]] = mappedPages
+			}
+		}
+		if strings.Contains(line, ",") {
+			pageOrders = append(pageOrders, line)
+		}
 	}
-	fmt.Printf("total: %d\n", total)
+	for _, pageOrder := range pageOrders {
+		pageNums, _ := StringsToIntegers(strings.Split(pageOrder, ","))
+		isValid := true
+		for index := range len(pageNums) - 1 {
+			if !slices.Contains(pagesMap[pageNums[index]], pageNums[index+1]) {
+				isValid = false
+				break
+			}
+		}
+		if isValid {
+			total += pageNums[len(pageNums)/2]
+		}
+	}
+	fmt.Printf("TOTAL: %d\n", total)
 }
 
 func Day5Challenge2() {
