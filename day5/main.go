@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func Day5Challenge1() {
-	fmt.Println("Day5Challenge1")
+func Day5() {
+	fmt.Println("Day5")
 
 	file, err := os.Open("./day5/input.txt")
 	if err != nil {
@@ -43,6 +43,8 @@ func Day5Challenge1() {
 			pageOrders = append(pageOrders, line)
 		}
 	}
+
+	secondTotal := 0
 	for _, pageOrder := range pageOrders {
 		pageNums, _ := StringsToIntegers(strings.Split(pageOrder, ","))
 		isValid := true
@@ -54,27 +56,34 @@ func Day5Challenge1() {
 		}
 		if isValid {
 			total += pageNums[len(pageNums)/2]
+		} else {
+			// Create a map with initial indices and numbers
+			pageIndexMap := make(map[int]int)
+			for index := range len(pageNums) - 1 {
+				for secondInd := index + 1; secondInd < len(pageNums); secondInd++ {
+					_, ok := pageIndexMap[pageNums[index]]
+					if !ok {
+						pageIndexMap[pageNums[index]] = index
+					}
+					_, okSecond := pageIndexMap[pageNums[secondInd]]
+					if !okSecond {
+						pageIndexMap[pageNums[secondInd]] = secondInd
+					}
+					if !slices.Contains(pagesMap[pageNums[index]], pageNums[secondInd]) {
+						// If next num is not in list of the first one, increase and decrease indices accordingly
+						pageIndexMap[pageNums[index]]++
+						pageIndexMap[pageNums[secondInd]]--
+					}
+				}
+			}
+			for num, ind := range pageIndexMap {
+				if ind == len(pageNums)/2 {
+					secondTotal += num
+					break
+				}
+			}
 		}
 	}
 	fmt.Printf("TOTAL: %d\n", total)
-}
-
-func Day5Challenge2() {
-	fmt.Println("Day5Challenge2")
-
-	file, err := os.Open("./day5/input.txt")
-	if err != nil {
-		fmt.Println("could not read file")
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	total := 0
-	var lines []string
-	for scanner.Scan() {
-		line := scanner.Text()
-		lines = append(lines, line)
-	}
-
-	fmt.Printf("total: %d\n", total)
+	fmt.Printf("SECOND TOTAL: %d\n", secondTotal)
 }
